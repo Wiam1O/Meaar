@@ -1,0 +1,161 @@
+﻿﻿
+@model List<Meaar5.Models.FacultyCources>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/courses.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "My Courses";
+    Layout = "_Layout";
+}
+
+
+<div class="courses-page">
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    <div class="courses-container">
+
+        <h2 class="courses-title">My Courses</h2>
+
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var group in Model.GroupBy(x => x.Course.CourseId))
+            {
+                var course = group.First().Course;
+
+                <div class="course-card">
+
+                    <div class="course-header">
+
+                        <div class="course-info">
+
+                            <h4>@course.CourseName</h4>
+
+                            <span class="course-code">@course.CourseCode</span>
+
+                            <span class="course-hours">
+                                 @course.CreditHours Credit Hours
+                            </span>
+
+                            <p class="course-desc">
+                                Introduction to core concepts and applied knowledge.
+                            </p>
+
+                         
+
+                            <a asp-controller="Analysis"
+                               asp-action="CLO"
+                               asp-route-courseId="@course.CourseId"
+                               class="btn-custom btn-clo">
+                                Manage CLOs
+                            </a>
+                        
+
+                        </div>
+
+                    
+
+                    </div>
+
+                    <div class="sections-wrapper">
+
+                        @foreach (var item in group)
+                        {
+                            <div class="section-row">
+
+                                <div class="section-name">
+                                    Section: @item.Section
+                                </div>
+
+                                <div class="section-actions">
+
+                                  <a asp-controller="Grades"
+                                    asp-action="Upload"
+                                  asp-route-courseId="@course.CourseId"
+                                       asp-route-sectionId="@item.Id"
+                                       class="btn-custom btn-action">
+                                        Upload Grades
+                                    </a>
+
+                                    <a asp-controller="Analysis"
+                                       asp-action="Analysis"
+                                       asp-route-sectionId="@item.Id"
+                                       class="btn-custom btn-action ">
+                                        
+                                        Analyze
+                                    </a>
+                                    
+
+                                        <a asp-controller="Reports"
+                                           asp-action="CoursesReport"
+                                           asp-route-sectionId="@item.Id"
+                                       class="btn-custom btn-report">
+
+                                            Course Report
+                                        </a>
+
+                             
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+                    <div class="course-footer">
+
+                        @foreach (var item in group)
+                        {
+                            <div style="margin-top:10px;">
+
+                                @if (item.IsSubmitted)
+                                {
+                                    <span style="color:darkgreen;font-weight:bold;">
+                                        Submitted 
+                                    </span>
+                                }
+                                else
+                                {
+                                    <form asp-controller="Reports"
+                                          asp-action="SubmitReport"
+                                          method="post"
+                                          style="display:inline;">
+
+                                        <input type="hidden" name="sectionId" value="@item.Id" />
+
+                                        <button type="submit" class="btn-custom btn-action">
+                                            Submit to Department
+                                        </button>
+                                    </form>
+                                }
+
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-message">
+                No courses assigned yet.
+            </div>
+        }
+
+    </div>
+
+</div>

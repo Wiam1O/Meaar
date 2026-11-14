@@ -1,0 +1,141 @@
+﻿@{
+    ViewData["Title"] = "CoursesReport";
+}
+
+
+    <link rel="stylesheet" href="~/css/reportDetails.css" asp-append-version="true" />
+
+
+<form method="post" asp-controller="Reports" asp-action="DownloadPdf">
+
+    <div class="report-container">
+
+        <!-- A) Course Information -->
+        <h3 class="section-title">A) Course Information</h3>
+
+        <div class="info-grid">
+
+            <div>
+                <label>Course</label>
+                <input type="text" class="input-field" value="@ViewBag.CourseName" readonly />
+            </div>
+            <div>
+                <label>Course Code</label>
+                <input type="text" class="input-field" value="@ViewBag.CourseCode" readonly />
+            </div>
+
+            <div>
+                <label>Section</label>
+                <input type="text" class="input-field" value="@ViewBag.Section" readonly />
+            </div>
+
+            <div>
+                <label>Instructor</label>
+                <input type="text" class="input-field" value="@ViewBag.InstructorName" readonly />
+            </div>
+
+            <div>
+                <label>College</label>
+                <input type="text" name="college" class="input-field" placeholder="Enter College" />
+            </div>
+
+            <div>
+                <label>Department</label>
+                <input type="text" name="department" class="input-field" placeholder="Enter Department" />
+            </div>
+
+            <div>
+                <label>Semester</label>
+                <select name="semester" class="input-field">
+                    <option value="">Select Semester</option>
+                    <option>First Semester</option>
+                    <option>Second Semester</option>
+                    <option>Summer</option>
+                </select>
+            </div>
+
+            <div>
+                <div>
+                    <label>Program </label>
+                    <input type="text" name="program" class="input-field" placeholder="Enter Program" />
+                </div>
+            </div>
+
+            <div>
+                <label>Date</label>
+                <input type="date"
+                       name="date"
+                       class="input-field"
+                       value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+
+        </div>
+
+        <hr />
+
+        <!-- B) CLO Table -->
+        <h3 class="section-title">B) Course Learning Outcomes</h3>
+
+        @if (ViewBag.NoData != null)
+        {
+            <p>No data available ❌</p>
+        }
+
+        @if (ViewBag.Report != null)
+        {
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Assessment</th>
+                            <th>Target</th>
+                            <th>Actual</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in ViewBag.Report)
+                        {
+                            <tr>
+                                <td>@item.Description</td>
+                                <td>@item.Type</td>
+                                <td>@item.Assessment</td>
+                                <td>@item.Target %</td>
+                                <td>@Math.Round(item.Actual, 1) %</td>
+
+                                <td class="@(item.Actual >= item.Target ? "status-achieved" : "status-not")">
+                                    @(item.Actual >= item.Target ? " Achieved" : " Not Achieved")
+                                </td>
+
+                               
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        }
+
+        <!-- C) Overall -->
+        <h3 class="section-title">C) Overall Evaluation</h3>
+
+        <textarea name="overall"
+                  class="overall-box"
+                  placeholder="Write overall evaluation..."></textarea>
+
+        <!-- زر التحميل -->
+        <div class="btn-container">
+            <button type="submit" class="btn-save">
+                Download PDF
+            </button>
+        </div>
+
+    </div>
+
+    <input type="hidden" name="sectionId" value="@ViewBag.SectionId" />
+
+</form>

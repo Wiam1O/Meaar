@@ -1,0 +1,89 @@
+﻿﻿body {
+    margin: 0;
+    padding: 0;
+    background:#f1f5f9;
+}
+
+
+/* ===== Filter Dropdowns ===== */
+
+.filter-form {
+    margin-bottom: 20px;
+}
+
+.filter-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.custom-filter {
+    width: 240px;
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+.filter-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #08979D;
+    margin-bottom: 8px;
+}
+
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 12px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 120px;
+    text-align: center;
+}
+
+.submitted {
+    background-color: #198754;
+}
+
+.not-submitted {
+    background-color: #dc3545;
+}
+
+/*    محرك البحث */
+.courses-scroll {
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.course-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding: 10px 14px;
+    white-space: normal;
+}
+.report-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+    .report-icon:hover {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+  
+
+  
+.report-btn {
+    background: none;
+    border: none;
+    padding: 5px;
+}

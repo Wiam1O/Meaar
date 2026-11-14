@@ -1,0 +1,207 @@
+﻿@model dynamic
+
+@{
+    Layout = null;
+    var baseUrl = $"{Context.Request.Scheme}://{Context.Request.Host}";
+}
+
+<style>
+    body {
+        margin: 0;
+        background: #ccc;
+    }
+
+    .pdf-page {
+        width: 794px;
+        height: 1123px;
+        position: relative;
+        margin: 20px auto;
+        page-break-after: always;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .bg-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 794px;
+        height: 1123px;
+        object-fit: fill;
+        z-index: 0;
+    }
+
+    /*  النص */
+    .text {
+        position: absolute;
+        z-index: 2;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 2px 6px;
+    }
+
+    .text {
+        position: absolute;
+        z-index: 2;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    /* العمود اليمين */
+    .course-name {
+        top: 508px;
+        left: 475px;
+    }
+
+    .course-code {
+        top: 508px;
+        left: 275px;
+    }
+
+    .instructor {
+        top: 712px;
+        left: 499px;
+    }
+
+    .college {
+        top: 588px;
+        left: 540px;
+    }
+
+    .department {
+        top: 549px;
+        left: 539px;
+    }
+    
+
+    /* العمود اليسار */
+    .program {
+        top: 547px;
+        left: 145px;
+    }
+
+    .semester {
+        top: 672px;
+        left: 239px;
+    }
+
+    .date {
+        top: 878px;
+        left: 476px;
+    }
+
+    /*  الصفحة الثالثة */
+    .clo-row {
+        position: absolute;
+        font-size: 13px;
+        z-index: 2;
+    }
+
+    /* الأعمدة */
+    .clo-desc {
+        left: 514px;
+        width: 260px;
+    }
+
+    .clo-type {
+        left: 468px;
+    }
+
+    .clo-assess {
+        left: 365px;
+    }
+
+    .clo-target {
+        left: 292px;
+    }
+
+    .clo-actual {
+        left: 204px;
+    }
+
+    .clo-status {
+        left: 118px;
+    }
+
+    .overall {
+        top: 130px;
+        left: 500px;
+    }
+</style>
+
+<!--  الصفحة الأولى -->
+<div class="pdf-page">
+    <img src="@baseUrl/photos/Firstpage1.png" class="bg-img" />
+
+    <div class="text course-name">@Model.CourseName</div>
+    <div class="text course-code">@Model.CourseCode</div>
+    <div class="text instructor">@Model.InstructorName</div>
+    <div class="text college">@Model.College</div>
+    <div class="text department">@Model.Department</div>
+    <div class="text program">@Model.Program</div>
+    <div class="text semester">@Model.Semester</div>
+    <div class="text date">@Model.Date</div>
+</div>
+
+<!--  الصفحة الثانية -->
+<div class="pdf-page">
+    <img src="@baseUrl/photos/Secondpage2.png" class="bg-img" />
+</div>
+
+<!--  الصفحة الثالثة -->
+<div class="pdf-page">
+    <img src="@baseUrl/photos/Thirdpage3.png" class="bg-img" />
+
+    @if (Model.Report != null)
+    {
+        int startTop = 746;   
+        int rowHeight = 40;   
+
+        int i = 0;
+
+        foreach (var item in Model.Report)
+        {
+            int baseTop = startTop + (i * rowHeight);
+
+            int descTop = baseTop;
+            int typeTop = baseTop + 6;
+            int assessTop = baseTop + 6;
+            int targetTop = baseTop + 7;
+            int actualTop = baseTop + 6;
+            int statusTop = baseTop + 6;
+
+            <div class="clo-row clo-desc" style="top:@(descTop + "px")">
+                @item.Description
+            </div>
+
+            <div class="clo-row clo-type" style="top:@(typeTop + "px")">
+                @item.Type
+            </div>
+
+            <div class="clo-row clo-assess" style="top:@(assessTop + "px")">
+                @item.Assessment
+            </div>
+
+            <div class="clo-row clo-target" style="top:@(targetTop + "px")">
+                @item.Target
+            </div>
+
+            <div class="clo-row clo-actual" style="top:@(actualTop + "px")">
+                @Math.Round((double)item.Actual, 1) %
+            </div>
+
+            <div class="clo-row clo-status" style="top:@(statusTop + "px")">
+                @item.Status
+            </div>
+
+            i++;
+        }
+    }
+    
+</div>
+
+<!--  الصفحة الرابعة -->
+<div class="pdf-page">
+    <img src="@baseUrl/photos/Fourthpage.png" class="bg-img" />
+    <div class="text overall">@Model.Overall</div>
+
+</div>

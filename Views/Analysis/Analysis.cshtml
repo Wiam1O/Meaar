@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Analysis";
+}
+
+<link rel="stylesheet" href="~/css/analysis.css" asp-append-version="true" />
+<div class="analysis-container">
+    <div class="analysis-header">
+
+        <h1 class="analysis-title">
+            Course Performance Analysis
+        </h1>
+
+        <p class="analysis-subtitle">
+            Analyze student performance and evaluate CLO achievement across exams for this section.
+        </p>
+
+        <h4 class="analysis-section">
+            Section: @ViewBag.Section
+        </h4>
+
+    </div>
+
+    <!--  اختيار الاختبار -->
+    <form method="get" asp-action="Analysis" asp-controller="Analysis">
+        <input type="hidden" name="sectionId" value="@ViewBag.SectionId" />
+
+        <label>Select Exam:</label>
+
+        <select name="examType" onchange="this.form.submit()">
+            <option value="">-- Select Exam --</option>
+
+            @if (ViewBag.Exams != null)
+            {
+                foreach (var typeexam in ViewBag.Exams)
+                {
+                    <option value="@typeexam" selected="@(typeexam == ViewBag.SelectedExam)">
+                        @typeexam
+                    </option>
+                }
+            }
+        </select>
+
+        <button type="submit"
+                formaction="@Url.Action("AllAnalysis", "Analysis")"
+                class="btn-all"
+                @(ViewBag.Exams != null && ViewBag.Exams.Count < 2 ? "disabled" : "")>
+            All Exams
+        </button>
+    </form>
+
+    <hr />
+
+    @if (ViewBag.NoData != null)
+    {
+        <div class="no-data">
+            No data available for this exam ❌
+        </div>
+    }
+
+    <!--  النتائج -->
+    @if (ViewBag.Result != null)
+    {
+        <div class="results-grid">
+
+            @foreach (var item in ViewBag.Result)
+            {
+                var percentage = (double)item.Percentage;
+                var status = item.Status;
+
+                <div class="result-card">
+
+                    <h4>@item.CLO</h4>
+
+                    <!--  النسبة -->
+                    <div class="progress">
+                        <div class="progress-bar
+                                    @(percentage >= 70 ? "bg-success" : "bg-danger")"
+                             style="width:@percentage%">
+                            @Math.Round(percentage, 1)%
+                        </div>
+                    </div>
+
+                    <!--  الحالة -->
+                    <p class="status
+                                @(percentage >= 70 ? "text-success" : "text-danger")">
+
+                        @(percentage >= 70 ? "✔ Achieved" : "❌ Not Achieved")
+                    </p>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

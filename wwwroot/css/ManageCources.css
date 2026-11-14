@@ -1,0 +1,79 @@
+﻿body {
+    background: #f1f5f9;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* العنوان */
+#ManageCources {
+    color: #08979D;
+    font-weight: bolder;
+}
+
+/* الوصف */
+#descprion {
+    color: #6EC6CA;
+}
+
+/* الفلاتر */
+.filter-row {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end; 
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* عنوان الفلتر */
+.filter-title {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 3px;
+}
+
+/* الدروب داون */
+.custom-filter {
+    min-width: 220px;
+    padding: 6px;
+}
+
+/* زر الفلترة */
+.filter-row button {
+    height: 38px;
+    padding: 0 15px;
+}
+.form-select-sm {
+    height: 38px;
+    border-radius: 8px;
+}
+
+label.form-label {
+    font-size: 13px;
+    margin-bottom: 3px;
+    color: #555;
+}
+.btn-show {
+    background: linear-gradient(135deg, #6EC6CA, #08979D);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+    .btn-show:hover {
+        filter: brightness(1.05);
+        color: white;
+    }
+
+
+.btn-remove {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+    .btn-remove:hover {
+        background-color: #fecaca;
+        color: #991b1b;
+    }

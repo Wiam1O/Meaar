@@ -1,0 +1,48 @@
+﻿﻿@{
+ViewData["Title"] = "Homepage";
+
+}
+<link rel="stylesheet" href="~/css/myCources.css" asp-append-version="true" />
+<div class="welcome-box">
+  
+    <p>Welcome to Meaar system</p>
+</div>
+<div class="courses-container">
+
+    <!-- My Courses -->
+    <a asp-controller="Home" asp-action="courses" class="course-card science">
+        <div class="course-text">
+            <h3>My Courses</h3>
+            <p>View all assigned courses</p>
+        </div>
+        <img src="~/photos/mycources.png" class="course-img" />
+    </a>
+
+    <!-- Upload Grades -->
+    <a asp-controller="Home" asp-action="Section" asp-route-name="upload" class="course-card math">
+        <div class="course-text">
+            <h3>Upload Grades</h3>
+            <p>Enter students' grades</p>
+        </div>
+        <img src="~/photos/uploaingfiles.png" class="course-img" />
+    </a>
+
+    <!-- Results Analysis -->
+    <a asp-controller="Home" asp-action="Section" asp-route-name="analysis" class="course-card drawing">
+        <div class="course-text">
+            <h3>Results Analysis</h3>
+            <p>Performance statistics and reports</p>
+        </div>
+        <img src="~/photos/analysisresults.png" class="course-img" />
+    </a>
+
+    <!-- Reports -->
+    <a asp-controller="Home" asp-action="Section" asp-route-name="reports" class="course-card eng">
+        <div class="course-text">
+            <h3>Reports</h3>
+            <p>Print and export reports</p>
+        </div>
+        <img src="~/photos/reporting.png" class="course-img" />
+    </a>
+
+</div>

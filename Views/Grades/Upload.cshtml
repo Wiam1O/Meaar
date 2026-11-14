@@ -1,0 +1,155 @@
+﻿@model List<Meaar5.Models.FacultyCources>
+
+
+@{
+    ViewData["Title"] = "Upload Grades";
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<link rel="stylesheet" href="~/css/upload.css" />
+
+<div class="main-layout">
+
+    <!--  كارد الرفع -->
+    <div class="upload-box">
+
+        <h2>Upload Grades</h2>
+        <p>Upload exam file to analyze student performance</p>
+
+        <form asp-action="Upload" method="post" enctype="multipart/form-data">
+
+            <input type="hidden" name="courseId" value="@ViewBag.CourseId" />
+            <input type="hidden" name="sectionId" value="@ViewBag.SectionId" />
+
+            <label>Exam Type:</label>
+            <select name="examType" class="input" required>
+                <option value="" disabled selected>-- Select Exam Type --</option>
+                <option value="Quiz1">Quiz1</option>
+                <option value="Quiz2">Quiz2</option>
+                <option value="Midterm">Midterm</option>
+                <option value="Midterm2">Midterm2</option>
+                <option value="Final">Final</option>
+            </select>
+            <small class="hint">Choose the type of exam for this file</small>
+            <label>Excel File:</label>
+            <input type="file" name="file" class="input-file" accept=".xlsx,.xls" required />
+            <small class="hint">Upload Excel file containing students grades (Q1–Qn)</small>
+
+            @if (ViewBag.Error != null)
+            {
+                <p style="color:red">@ViewBag.Error</p>
+            }
+
+            <button type="submit" class="btn-upload">
+                Upload To Classify 
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- 🔷 كارد التصنيف -->
+@if(ViewBag.QuestionCount != null || ViewBag.SavedQuestions != null)
+{
+        <div class="classification-box">
+
+            <h2>Classify Questions</h2>
+
+            <form asp-action="SaveClassification" method="post">
+
+                <input type="hidden" name="courseId" value="@ViewBag.CourseId" />
+                <input type="hidden" name="examType" value="@ViewBag.ExamType" />
+                <input type="hidden" name="questionCount" value="@ViewBag.QuestionCount" />
+                <input type="hidden" name="sectionId" value="@ViewBag.SectionId" />
+                <div class="questions-grid">
+                    @{
+                        var saved = (ViewBag.SavedQuestions as List<Meaar5.Models.Questions>)
+                        ?.Where(q => q.ExamType == ViewBag.ExamType)
+                        .ToList();
+                    }
+                    @for (int i = 1; i <= (int)ViewBag.QuestionCount; i++)
+                    {
+                        <div class="question-card">
+                            <span>Q@(i)</span>
+
+                            <input type="hidden" name="questions[@(i - 1)].QuestionNumber" value="@i" />
+
+                            <select name="questions[@(i - 1)].CLO" class="form-control">
+
+                                <option value="">-- Select CLO --</option>
+
+                                @foreach (var clo in ViewBag.CLOs)
+                                {
+                                    <option value="@clo.CLOId">
+                                        @clo.Description
+                                    </option>
+                                }
+
+                                
+
+                            </select>
+                        </div>
+                    }
+
+                </div>
+
+                <button type="button" class="btn-save" onclick="validateAndSubmit()">
+                    Save Classification
+                </button>
+
+            </form>
+
+            <!--  زر التحليل -->
+            @if (ViewBag.SavedQuestions != null)
+            {
+                <div style="margin-top:20px; text-align:center;">
+                    <a asp-controller="Analysis"
+                       asp-action="Analysis"
+                       asp-route-sectionId="@ViewBag.SectionId"
+                       asp-route-examType="@ViewBag.ExamType">
+                        Go to Analysis
+                    </a>
+
+
+                </div>
+            }
+
+        </div>
+}
+
+    
+
+<script>
+    function validateAndSubmit() {
+
+        let valid = true;
+
+        document.querySelectorAll(".question-card").forEach(card => {
+            card.style.border = "none";
+        });
+
+        document.querySelectorAll(".question-card").forEach(card => {
+
+            let select = card.querySelector("select");
+
+            if (!select.value) {
+                valid = false;
+
+                card.style.border = "2px solid red";
+                card.style.background = "#ffe5e5";
+            }
+        });
+
+        if (!valid) {
+            alert("⚠️ Please classify all questions before saving");
+            return;
+        }
+
+        document.querySelector("form[action*='SaveClassification']").submit();
+    }
+</script>

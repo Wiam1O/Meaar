@@ -1,0 +1,244 @@
+
+body {
+    background: #f1f5f9;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.courses-page .courses-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+.courses-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #1e293b;
+}
+
+.courses-page .course-card {
+    display: block !important;
+}
+/* Course Card */
+
+.course-card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    margin-bottom: 35px;
+    padding: 28px;
+    transition: .25s;
+}
+
+    .course-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 32px rgba(0,0,0,0.15);
+    }
+
+/* Header */
+
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 15px;
+}
+
+.course-info h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.course-code {
+    margin-right: 10px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.course-hours {
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* Description */
+
+.course-desc {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.desc-icon {
+    margin-right: 5px;
+    color: #0f766e;
+}
+
+
+/* Course Report */
+
+.btn-course-report {
+    background: #0f766e;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+    .btn-course-report:hover {
+        background: #115e59;
+    }
+
+/* Sections */
+
+.sections-wrapper {
+    margin-top: 20px;
+}
+
+.section-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.section-name {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.section-actions {
+    display: flex;
+    gap: 18px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #334155;
+    cursor: pointer;
+}
+
+    .icon-btn span {
+        font-size: 11px;
+        margin-top: 4px;
+    }
+
+/* Footer */
+
+.course-footer {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 12px;
+}
+
+.submission-status {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.not-submitted {
+    color: #dc2626;
+}
+
+
+
+.empty-message {
+    text-align: center;
+    padding: 40px;
+    background: #f1f5f9;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.courses-box {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.courses-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+    .courses-table th {
+        background: #1e3a8a;
+        color: white;
+        padding: 10px;
+    }
+
+    .courses-table td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
+
+    .courses-table tr:hover {
+        background: #f3f4f6;
+    }
+
+   
+
+/* ÍÇáÉ Submitted */
+.status-submitted {
+    background-color: #CCABD8;
+    color: #065f46;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+/* ÒÑ ÚÇã */
+.btn-custom {
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    color: white !important;
+    text-decoration: none !important;
+    display: inline-block;
+}
+
+
+.btn-clo {
+    background: linear-gradient(135deg, #CCABD8, #8474A1);
+}
+
+.btn-action {
+    background: linear-gradient(135deg, #6EC6CA, #08979D);
+}
+
+.btn-report {
+    background: #0f766e;
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active,
+.btn-custom:visited {
+    color: white !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}

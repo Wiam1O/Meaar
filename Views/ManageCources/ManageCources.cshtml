@@ -1,0 +1,223 @@
+﻿@model List<Meaar5.Models.FacultyCources>
+
+@{
+    ViewData["Title"] = "ManageCources ";
+    Layout = "_LayoutDepartment";
+}
+
+<link rel="stylesheet" href="~/css/ManageCources.css" asp-append-version="true" />
+
+<h1 id="ManageCources">Department Course Management</h1>
+<h4 id="descprion">Add,update,and assign courses within the department</h4>
+
+@{
+    var facultyList = ViewBag.FacultyMembers as IEnumerable<Meaar5.Models.FacultyMembers>;
+    var courseList = ViewBag.Courses as IEnumerable<Meaar5.Models.CourcesData>;
+}
+
+<div class="container-fluid">
+    <div class="row g-4">
+
+        <!-- LEFT -->
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm border-1 border-info">
+                <div class="card-body">
+
+                    <h5 class="card-title mb-3">Course Assignment</h5>
+                    <p class="text-muted mb-4" style="font-size:14px;">
+                        Select doctor and course, then type section .
+                    </p>
+
+                    <form method="get" asp-action="Index" asp-controller="ManageCources" class="filter-form mb-3">
+
+                        <!--  نحفظ الدكتور -->
+                        <input type="hidden" name="FacultyId" value="@Context.Request.Query["FacultyId"]" />
+
+                        <div class="filter-row">
+
+                            <div class="filter-title">Select College</div>
+
+                            <select name="college" class="form-select custom-filter" onchange="this.form.submit()">
+                                <option value="">Select College</option>
+                                @foreach (var col in ViewBag.Colleges)
+                                {
+                                    if (Context.Request.Query["college"] == col)
+                                    {
+                                        <option value="@col" selected>@col</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@col">@col</option>
+                                    }
+                                }
+                            </select>
+
+                            <div class="filter-title">Select Department</div>
+
+                            <select name="department" class="form-select custom-filter" onchange="this.form.submit()">
+                                <option value="">Select Department</option>
+                                @foreach (var dep in ViewBag.Departments)
+                                {
+                                    if (Context.Request.Query["department"] == dep)
+                                    {
+                                        <option value="@dep" selected>@dep</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@dep">@dep</option>
+                                    }
+                                }
+                            </select>
+
+                        </div>
+                    </form>
+
+                    <!-- ASSIGN -->
+                    <form method="post" asp-action="Assign" asp-controller="ManageCources">
+                        <input type="hidden" name="FacultyId" value="@Context.Request.Query["FacultyId"]" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Faculty member:</label>
+
+                            <select name="FacultyId" class="form-select" required>
+                                <option value="" selected disabled>-- Select Faculty member --</option>
+
+                                @if (facultyList != null)
+                                {
+                                    foreach (var f in facultyList)
+                                    {
+                                        <option value="@f.FacultyId">@f.FirstName @f.LastName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Course</label>
+
+                            <select name="CourseId" class="form-select" required>
+                                <option value="" selected disabled>-- Select Course --</option>
+
+                                @if (courseList != null)
+                                {
+                                    foreach (var c in courseList)
+                                    {
+                                        <option value="@c.CourseId">@c.CourseName (@c.CourseCode)</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Section</label>
+                            <input name="Section" class="form-control" type="text" placeholder=" YF__ , MF__" required />
+                        </div>
+
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary flex-grow-1">
+                                Assign
+                            </button>
+                        </div>
+
+                        @Html.AntiForgeryToken()
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="col-12 col-lg-8">
+            <div class="card shadow-sm border-1 border-info">
+                <div class="card-body">
+
+                    <h5 class="mb-1">Assigned Courses</h5>
+                    <div class="text-muted mb-3">
+                        Faculty member: <span class="fw-semibold">@ViewBag.DoctorName</span>
+                    </div>
+
+                    <!-- SHOW -->
+                    <form method="get" asp-action="Index" asp-controller="ManageCources" class="d-flex align-items-end gap-2 mb-3">
+
+                        <input type="hidden" name="college" value="@Context.Request.Query["college"]" />
+                        <input type="hidden" name="department" value="@Context.Request.Query["department"]" />
+
+                        <div>
+                            <label class="form-label">Faculty member:</label>
+                            <select name="FacultyId" class="form-select form-select-sm" style="width:250px;" required>
+                                <option value="">-- Select Faculty member --</option>
+
+                                @foreach (var f in ViewBag.FacultyMembers)
+                                {
+                                    <option value="@f.FacultyId">@f.FirstName @f.LastName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-show btn-sm px-3">
+                            Show
+                        </button>
+
+                    </form>
+
+                    <!-- TABLE -->
+                    <form method="post" asp-action="RemoveSelected" asp-controller="ManageCources">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="FacultyId" value="@Context.Request.Query["FacultyId"]" />
+
+                        <div class="d-flex justify-content-end mb-2">
+                            <button type="submit" class="btn-remove btn-sm">
+                                Remove Selected
+                            </button>
+                        </div>
+
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Num</th>
+                                    <th>Course Name</th>
+                                    <th>Code</th>
+                                    <th>Credits</th>
+                                    <th>Section</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    var i = 1;
+                                    foreach (var row in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="selectedIds" value="@row.Id" />
+                                            </td>
+                                            <td>@i</td>
+                                            <td>@row.Course?.CourseName</td>
+                                            <td>@row.Course?.CourseCode</td>
+                                            <td>@row.Course?.CreditHours</td>
+                                            <td>@row.Section</td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center">No data yet.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

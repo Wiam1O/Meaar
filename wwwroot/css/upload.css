@@ -1,0 +1,163 @@
+﻿body {
+    background: linear-gradient(135deg, #CCABD8, #6EC6CA);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* layout */
+.main-layout {
+    display: flex;
+    gap: 20px;
+    padding: 40px;
+    align-items: flex-start;
+}
+
+/* كارد الرفع */
+.upload-box {
+    width: 30%;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* كارد التصنيف */
+.classification-box {
+    width: 70%;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* العناوين */
+h2 {
+    color: #6EC6CA;
+    margin-bottom: 10px;
+}
+
+p {
+    color: gray;
+    margin-bottom: 20px;
+}
+
+/* inputs */
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.input-file {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px dashed #6EC6CA;
+    background: #f9f9f9;
+}
+
+/* زر الرفع */
+.btn-upload {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #CCABD8, #6EC6CA);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+    .btn-upload:hover {
+        opacity: 0.9;
+    }
+
+/* زر الحفظ */
+.btn-save {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #6EC6CA, #4CAF50);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* شبكة الأسئلة */
+.questions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* كرت السؤال */
+.question-card {
+    background: #f7f7f7;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+    /* رقم السؤال */
+    .question-card span {
+        display: block;
+        font-weight: bold;
+        color: #6EC6CA;
+        margin-bottom: 5px;
+    }
+
+    /* select */
+    .question-card select {
+
+
+    width: 100%;
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: white;
+    color: #333 !important;
+}
+    
+
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+    }
+
+    .upload-box,
+    .classification-box {
+        width: 100%;
+    }
+}
+.hint {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    margin-top: 3px;
+}
+
+
+.question-card select option {
+    color: #333 !important;
+    background: white;
+}
+.alert-success {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}

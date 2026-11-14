@@ -1,0 +1,199 @@
+﻿@model List<Meaar5.Models.FacultyCources>
+
+@{
+    ViewData["Title"] = "View Reports";
+    Layout = "_LayoutDepartment";
+    var courses = ViewBag.Courses as List<Meaar5.Models.CourcesData>;
+    int? selectedId = ViewBag.SelectedCourseId;
+}
+
+<link rel="stylesheet" href="~/css/ViewReports.css" asp-append-version="true" />
+
+
+
+<form method="get" asp-action="ViewReports" asp-controller="ManageCources" class="filter-form mb-3">
+    <div class="filter-row">
+
+        <div class="filter-title">
+            Select College
+        </div>
+
+
+        <select name="college" class="form-select custom-filter" onchange="this.form.submit()">
+            <option value="">Select College</option>
+            @foreach (var col in ViewBag.Colleges)
+            {
+                if (ViewBag.SelectedCollege == col)
+                {
+                    <option value="@col" selected>@col</option>
+                }
+                else
+                {
+                    <option value="@col">@col</option>
+                }
+            }
+        </select>
+
+        <div class="filter-title">
+            Select Department
+        </div>
+
+        <select name="department" class="form-select custom-filter" onchange="this.form.submit()">
+            <option value="">Select Department</option>
+            @foreach (var dep in ViewBag.Departments)
+            {
+                if (ViewBag.SelectedDepartment == dep)
+                {
+                    <option value="@dep" selected>@dep</option>
+                }
+                else
+                {
+                    <option value="@dep">@dep</option>
+                }
+            }
+        </select>
+
+    </div>
+</form>
+
+<div class="row g-4">
+
+    <!-- LEFT CARD: Courses -->
+    <div class="col-12 col-lg-4">
+        <div class="card shadow-sm border-1 border-info">
+            <div class="card-body">
+ 
+                <h5 class="card-title mb-3">Courses</h5>
+                <p class="text-muted">Select a course to view assigned faculty members.</p>
+                <!-- محرك البحث -->
+                <input type="text" id="courseSearch" class="form-control mb-3" placeholder="Search course..." />
+
+                <div class="courses-scroll">
+
+                    @if (courses != null && courses.Any())
+                    {
+                        @foreach (var c in courses)
+                        {
+                            var isSelected = selectedId == c.CourseId;
+
+                            <a asp-action="ViewReports"
+                               asp-route-courseId="@c.CourseId"
+                               class="course-item btn @(isSelected ? "btn-primary" : "btn-outline-primary")">
+                                @c.CourseName
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <p>No courses found.</p>
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT CARD: Assigned Faculty -->
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm border-1 border-info">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Assigned Faculty</h5>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Course</th>
+                                <th>Code</th>
+                                <th>Section</th>
+                                <th>Status</th>
+                                <th>Report</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Model == null || !Model.Any())
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center">No data found.</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.FacultyMember?.FirstName @item.FacultyMember?.LastName</td>
+                                        <td>@item.Course?.CourseName</td>
+                                        <td>@item.Course?.CourseCode</td>
+                                        <td>@item.Section</td>
+                                        <td>
+                                            @if (item.IsSubmitted)
+                                            {
+                                                <span class="status-badge submitted">Submitted</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="status-badge not-submitted">Not Submitted</span>
+                                            }
+                                        
+                                <td>
+                                    @if (item.IsSubmitted)
+                                                {
+                                                <form asp-controller="Reports" asp-action="DownloadReport" method="post">
+                                                        <input type="hidden" name="sectionId" value="@item.Id" />
+                                                        <button type="submit">
+
+                                                        <img class="report-icon"  src="~/photos/reporting.png" alt="Report" />
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </td> 
+                                    </tr>
+                               
+                            }}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .courses-scroll {
+        max-height: 420px;
+        overflow-y: auto;
+    }
+</style>
+
+
+<!-- للبحث في المواد   -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("search loaded");
+
+        const searchInput = document.getElementById("courseSearch");
+        const courseItems = document.querySelectorAll(".course-item");
+
+        if (!searchInput) return;
+
+        searchInput.addEventListener("input", function () {
+            const searchValue = this.value.toLowerCase().trim();
+
+            courseItems.forEach(function (item) {
+                const courseName = item.textContent.toLowerCase().trim();
+
+                if (courseName.includes(searchValue)) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+    });
+</script>
